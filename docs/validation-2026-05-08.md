@@ -99,7 +99,7 @@
 
 启动命令：
 
-- `powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\AIClient2API-study\scripts\watch-kiro-credentials.ps1 -PollMinutes 5`
+- `powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\AIClient2API-study\scripts\watch-kiro-credentials.ps1 -PollMinutes 1`
 
 轮询状态文件：
 

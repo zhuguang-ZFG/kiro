@@ -1,12 +1,12 @@
 [CmdletBinding()]
 param(
-    [int]$PollMinutes = 5,
+    [int]$PollMinutes = 1,
     [string]$ProjectRoot = "C:\Users\Administrator\AIClient2API-study",
     [string]$SyncScriptPath = "C:\Users\Administrator\AIClient2API-study\scripts\sync-kiro-and-start.ps1",
     [string]$StateFile = "C:\Users\Administrator\AIClient2API-study\logs\kiro-credential-watch.state.json",
     [string]$LockFile = "C:\Users\Administrator\AIClient2API-study\logs\kiro-credential-watch.lock",
     [string]$LogFile = "C:\Users\Administrator\AIClient2API-study\logs\kiro-credential-watch.log",
-    [string]$MutexName = "Global\\AIClient2API-KiroCredentialWatcher"
+    [string]$MutexName = "Global\AIClient2API-KiroCredentialWatcher"
 )
 
 $ErrorActionPreference = "Stop"

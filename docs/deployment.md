@@ -110,7 +110,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
 使用 Windows 用户级启动项：
 
 ```powershell
-$cmd = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\AIClient2API-study\scripts\watch-kiro-credentials.ps1 -PollMinutes 5'
+$cmd = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\AIClient2API-study\scripts\watch-kiro-credentials.ps1 -PollMinutes 1'
 New-ItemProperty `
   -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' `
   -Name 'AIClient2API-AutoStart' `
@@ -119,7 +119,7 @@ New-ItemProperty `
   -Force
 ```
 
-watcher 会每 5 分钟执行一次同步脚本，并写入：
+watcher 会每 1 分钟执行一次同步脚本，并写入：
 
 ```text
 C:\Users\Administrator\AIClient2API-study\logs\kiro-credential-watch.state.json

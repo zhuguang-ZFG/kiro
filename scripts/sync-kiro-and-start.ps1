@@ -51,6 +51,13 @@ function Write-Utf8NoBomJson {
     [System.IO.File]::WriteAllText($Path, $json, $encoding)
 }
 
+function Get-CredentialStamp {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path)) { return $null }
+    $item = Get-Item -LiteralPath $Path
+    return "{0}:{1}" -f $item.LastWriteTimeUtc.Ticks, $item.Length
+}
+
 function Get-KiroCredentialDir {
     if ($CredentialDir) { return $CredentialDir }
     return [System.IO.Path]::Combine($env:USERPROFILE, ".aws", "sso", "cache")
@@ -94,9 +101,16 @@ function Update-ProviderPoolCredentialPath {
     $node = $data.'claude-kiro-oauth'[0]
     $normalized = ($CredentialPath -replace '\\', '/')
     $previous = [string]$node.KIRO_OAUTH_CREDS_FILE_PATH
-    $changed = $previous -ne $normalized
+    $credentialStamp = Get-CredentialStamp -Path $CredentialPath
+    $previousCredentialStamp = [string]$node.LastCredentialStamp
+    $changed = ($previous -ne $normalized) -or ($previousCredentialStamp -ne $credentialStamp)
 
     $node.KIRO_OAUTH_CREDS_FILE_PATH = $normalized
+    if ($node.PSObject.Properties.Name -contains "LastCredentialStamp") {
+        $node.LastCredentialStamp = $credentialStamp
+    } else {
+        $node | Add-Member -NotePropertyName "LastCredentialStamp" -NotePropertyValue $credentialStamp
+    }
     $node.isHealthy = $true
     $node.isDisabled = $false
     $node.errorCount = 0
