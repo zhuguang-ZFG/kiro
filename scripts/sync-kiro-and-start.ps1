@@ -30,15 +30,25 @@ function Get-ListeningPid {
 
 function Stop-PortProcess {
     param([int]$Port)
-    $pid = Get-ListeningPid -Port $Port
-    if ($null -ne $pid) {
+    $listeningPid = Get-ListeningPid -Port $Port
+    if ($null -ne $listeningPid) {
         try {
-            Stop-Process -Id $pid -Force -ErrorAction Stop
-            Write-Log "stopped PID $pid on port $Port"
+            Stop-Process -Id $listeningPid -Force -ErrorAction Stop
+            Write-Log "stopped PID $listeningPid on port $Port"
         } catch {
-            Write-Log ("failed stopping PID {0} on port {1}: {2}" -f $pid, $Port, $_.Exception.Message)
+            Write-Log ("failed stopping PID {0} on port {1}: {2}" -f $listeningPid, $Port, $_.Exception.Message)
         }
     }
+}
+
+function Write-Utf8NoBomJson {
+    param(
+        [string]$Path,
+        [object]$Data
+    )
+    $json = $Data | ConvertTo-Json -Depth 20
+    $encoding = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($Path, $json, $encoding)
 }
 
 function Get-KiroCredentialDir {
@@ -96,7 +106,7 @@ function Update-ProviderPoolCredentialPath {
     $node.lastErrorMessage = $null
     $node.scheduledRecoveryTime = $null
 
-    $data | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $JsonPath -Encoding UTF8
+    Write-Utf8NoBomJson -Path $JsonPath -Data $data
 
     return @{
         Changed = $changed

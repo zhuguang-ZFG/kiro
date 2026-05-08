@@ -8,6 +8,10 @@
   - 本次本机验证结果
   - 复现步骤
   - 排障结论
+- `docs/deployment.md`
+  - Windows 本机部署步骤
+  - AIClient2API 与 CC Switch 配置
+  - 开机自启、验证命令和常见故障
 - `scripts/sync-kiro-and-start.ps1`
   - 单次同步最新 Kiro 凭证到 `AIClient2API`
   - 必要时拉起或重启 `AIClient2API`
